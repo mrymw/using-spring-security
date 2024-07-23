@@ -36,7 +36,7 @@ public class JWTUtils {
     }
     public String getUsernameFromToken(String token){
         return Jwts.parserBuilder().setSigningKey(jwtSecret).build()
-                .parseClaimsJwt(token).getBody().getSubject();
+                .parseClaimsJws(token).getBody().getSubject();
         //parseBuilder -> URL decoding
         //setSigningKey -> send the secret key
         //parseClaimJwt -> send the token
@@ -45,7 +45,7 @@ public class JWTUtils {
 
     public boolean validateJwtToken(String authToken){
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJwt(authToken);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SecurityException e) {
             logger.log(Level.SEVERE, "Invalid JWT signature : {}", e.getMessage());
