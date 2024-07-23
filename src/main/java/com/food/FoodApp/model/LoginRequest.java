@@ -1,2 +1,9 @@
-package com.food.FoodApp.model;public class LoginRequest {
+package com.food.FoodApp.model;
+
+import lombok.Getter;
+
+@Getter
+public class LoginRequest {
+    private String email;
+    private String password;
 }

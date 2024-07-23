@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.context.WebApplicationContext;
 
 @Configuration
@@ -41,8 +42,14 @@ public class SecurityConfiguration {
         http.sessionManagement(
                 sessionAuthenticationStrategy -> sessionAuthenticationStrategy.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         http.csrf(csrf -> csrf.disable());
         return http.build();
+    }
+
+    @Bean
+    public JwtRequestFilter authenticationJwtTokenFilter() {
+        return new JwtRequestFilter();
     }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
